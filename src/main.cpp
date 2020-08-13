@@ -99,9 +99,19 @@ int main(int argc, const char* argv[]) {
     // load network
     auto detector = Detector(argv[1], device_type);
 
-    // inference
-    auto result = detector.Run(img, kConfThreshold, kIouThreshold);
+    for (int i = 0; i < 4; i ++) {
+        auto start = std::chrono::high_resolution_clock::now();
 
-    // visualize detections
-    Demo(img, result, class_names);
+        // inference
+        auto result = detector.Run(img, kConfThreshold, kIouThreshold);
+
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        // It should be known that it takes longer time at first time
+        std::cout << "end-to-end time : " << duration.count() << " ms" << std::endl;
+        std::cout << std::endl;
+    }
+
+//    // visualize detections
+//    Demo(img, result, class_names);
 }
